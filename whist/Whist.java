@@ -7,6 +7,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.File;
 
 @SuppressWarnings("serial")
 public class Whist extends CardGame {
@@ -51,7 +54,7 @@ public class Whist extends CardGame {
 	 
   private final String version = "1.0";
   public final int nbPlayers = 4;
-  public final int nbStartCards = 13;
+  public final int nbStartCards = 4;
   public final int winningScore = 11;
   private final int handWidth = 400;
   private final int trickWidth = 40;
@@ -101,6 +104,7 @@ private Card selected;
 
 private void initRound() {
 		 hands = deck.dealingOut(nbPlayers, nbStartCards); // Last element of hands is leftover cards; these are ignored
+		 
 		 for (int i = 0; i < nbPlayers; i++) {
 			   hands[i].sort(Hand.SortType.SUITPRIORITY, true);
 		 }
@@ -129,6 +133,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 	// Select and display trump suit
 		final Suit trumps = randomEnum(Suit.class);
 		final Actor trumpsActor = new Actor("sprites/"+trumpImage[trumps.ordinal()]);
+		System.out.print(trumpsActor);
 	    addActor(trumpsActor, trumpsActorLocation);
 	// End trump suit
 	Hand trick;
@@ -138,6 +143,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 	int nextPlayer = random.nextInt(nbPlayers); // randomly select player to lead for this round
 	for (int i = 0; i < nbStartCards; i++) {
 		trick = new Hand(deck);
+	
     	selected = null;
         if (0 == nextPlayer) {  // Select lead depending on player type
     		hands[0].setTouchEnabled(true);
@@ -197,6 +203,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 					  // trumped when non-trump was winning
 					 (selected.getSuit() == trumps && winningCard.getSuit() != trumps)) {
 					 System.out.println("NEW WINNER");
+//					 System.out.println("next");
 					 winner = nextPlayer;
 					 winningCard = selected;
 				 }
@@ -217,6 +224,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 
   public Whist()
   {
+	
     super(700, 700, 30);
     setTitle("Whist (V" + version + ") Constructed for UofM SWEN30006 with JGameGrid (www.aplu.ch)");
     setStatusText("Initializing...");
@@ -231,8 +239,30 @@ private Optional<Integer> playRound() {  // Returns winner, if any
     refresh();
   }
 
-  public static void main(String[] args)
+  @SuppressWarnings("resource")
+public static void main(String[] args) throws IOException
   {
+  
+	
+	System.out.println("Choose properties (original/legal/smart): ");
+	Scanner myObj = new Scanner(System.in); 
+	String property = myObj.nextLine();
+  	
+	Properties gameProperties = new Properties();
+	String fileName =property+".properties";
+	File file=new File(fileName);
+	System.out.print(fileName);
+	
+	// Read properties
+	FileReader inStream = null;
+	try {
+		inStream = new FileReader("../"+fileName);
+		gameProperties.load(inStream);
+	} finally {
+		if (inStream != null) {
+		     inStream.close();
+		}
+	}
 	// System.out.println("Working Directory = " + System.getProperty("user.dir"));
     new Whist();
   }
