@@ -9,15 +9,19 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.File;
 
 @SuppressWarnings("serial")
 public class Whist extends CardGame {
+	private static int Human;
+	private static int NPC_random;
+	private static int NPC_legal;
+	private static int NPC_smart;
+
 	
-  public enum Suit
-  {
-    SPADES, HEARTS, DIAMONDS, CLUBS
-  }
+//  public enum Suit
+//  {
+//    SPADES, HEARTS, DIAMONDS, CLUBS
+//  }
 
   public enum Rank
   {
@@ -54,8 +58,10 @@ public class Whist extends CardGame {
 	 
   private final String version = "1.0";
   public final int nbPlayers = 4;
-  public final int nbStartCards = 4;
-  public final int winningScore = 11;
+  public static int nbStartCards = 4;
+  public static int winningScore = 11;
+  public Player[] players= new Player[nbPlayers];
+  
   private final int handWidth = 400;
   private final int trickWidth = 40;
   private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
@@ -78,7 +84,8 @@ public class Whist extends CardGame {
   private Hand[] hands;
   private Location hideLocation = new Location(-500, - 500);
   private Location trumpsActorLocation = new Location(50, 50);
-  private boolean enforceRules=false;
+  
+  private static boolean enforceRules=false;
 
   public void setStatus(String string) { setStatusText(string); }
   
@@ -87,8 +94,24 @@ private int[] scores = new int[nbPlayers];
 Font bigFont = new Font("Serif", Font.BOLD, 36);
 
 private void initScore() {
+	
+	
+	
 	 for (int i = 0; i < nbPlayers; i++) {
 		 scores[i] = 0;
+		 if(Human>0 && i==0) {
+			 players[i] = new Player("human",random);
+		 }else if (NPC_random > 0) {
+			 players[i] = new Player("random",random);
+			 NPC_random-=1;
+		 }else if (NPC_smart > 0) {
+			 players[i] = new Player("smart",random);
+			 NPC_smart-=1;
+		 }else if (NPC_legal > 0) {
+			 players[i] = new Player("legal",random);
+			 NPC_legal-=1;
+		 }
+		 
 		 scoreActors[i] = new TextActor("0", Color.WHITE, bgColor, bigFont);
 		 addActor(scoreActors[i], scoreLocations[i]);
 	 }
@@ -104,16 +127,19 @@ private Card selected;
 
 private void initRound() {
 		 hands = deck.dealingOut(nbPlayers, nbStartCards); // Last element of hands is leftover cards; these are ignored
-		 
 		 for (int i = 0; i < nbPlayers; i++) {
-			   hands[i].sort(Hand.SortType.SUITPRIORITY, true);
+				   hands[i].sort(Hand.SortType.SUITPRIORITY, true);
+				   players[i].setHand(hands[i]);
+			 }
+		 if(Human>0) {
+			 // Set up human player for interaction
+			CardListener cardListener = new CardAdapter()  // Human Player plays card
+				    {
+				      public void leftDoubleClicked(Card card) { selected = card; hands[0].setTouchEnabled(false); }
+				    };
+			hands[0].addCardListener(cardListener);
 		 }
-		 // Set up human player for interaction
-		CardListener cardListener = new CardAdapter()  // Human Player plays card
-			    {
-			      public void leftDoubleClicked(Card card) { selected = card; hands[0].setTouchEnabled(false); }
-			    };
-		hands[0].addCardListener(cardListener);
+		 
 		 // graphics
 	    RowLayout[] layouts = new RowLayout[nbPlayers];
 	    for (int i = 0; i < nbPlayers; i++) {
@@ -131,10 +157,10 @@ private void initRound() {
 
 private Optional<Integer> playRound() {  // Returns winner, if any
 	// Select and display trump suit
-		final Suit trumps = randomEnum(Suit.class);
-		final Actor trumpsActor = new Actor("sprites/"+trumpImage[trumps.ordinal()]);
-		System.out.print(trumpsActor);
-	    addActor(trumpsActor, trumpsActorLocation);
+	final Suit trumps = randomEnum(Suit.class);
+	final Actor trumpsActor = new Actor("sprites/"+trumpImage[trumps.ordinal()]);
+	
+	addActor(trumpsActor, trumpsActorLocation);
 	// End trump suit
 	Hand trick;
 	int winner;
@@ -145,14 +171,17 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 		trick = new Hand(deck);
 	
     	selected = null;
-        if (0 == nextPlayer) {  // Select lead depending on player type
+  
+        if (Human > 0 && 0 == nextPlayer) {  // Select lead depending on player type
     		hands[0].setTouchEnabled(true);
     		setStatus("Player 0 double-click on card to lead.");
     		while (null == selected) delay(100);
         } else {
     		setStatusText("Player " + nextPlayer + " thinking...");
             delay(thinkingTime);
-            selected = randomCard(hands[nextPlayer]);
+            selected = players[nextPlayer].getCard(trumps);
+ 
+//            selected = randomCard(hands[nextPlayer]);
         }
         // Lead with selected card
 	        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
@@ -249,20 +278,29 @@ public static void main(String[] args) throws IOException
 	String property = myObj.nextLine();
   	
 	Properties gameProperties = new Properties();
-	String fileName =property+".properties";
-	File file=new File(fileName);
+	String fileName ="whist/"+property+".properties";
+
 	System.out.print(fileName);
 	
 	// Read properties
 	FileReader inStream = null;
 	try {
-		inStream = new FileReader("../"+fileName);
+		inStream = new FileReader(fileName);
 		gameProperties.load(inStream);
 	} finally {
 		if (inStream != null) {
 		     inStream.close();
 		}
 	}
+	Human= Integer.parseInt(gameProperties.getProperty("Human"));
+	NPC_random= Integer.parseInt(gameProperties.getProperty("NPC_random"));
+	NPC_legal= Integer.parseInt(gameProperties.getProperty("NPC_legal"));
+	NPC_smart= Integer.parseInt(gameProperties.getProperty("NPC_random"));
+	enforceRules= Boolean.parseBoolean(gameProperties.getProperty("enforceRules"));
+	nbStartCards= Integer.parseInt(gameProperties.getProperty("nbStartCards"));
+	winningScore= Integer.parseInt(gameProperties.getProperty("winningScore"));
+	
+	
 	// System.out.println("Working Directory = " + System.getProperty("user.dir"));
     new Whist();
   }
