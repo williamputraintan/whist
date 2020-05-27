@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 import ch.aplu.jcardgame.*;
@@ -8,12 +9,22 @@ public class Player {
 	private String type;
 	private Card selectedCard;
 	private Random random;
+	private final SelectionStrategyFactory selectionStrategyFactory = new SelectionStrategyFactory();
+	private ArrayList<Card> cardsOnTable;
+
+	
+	
+
+	
 
 	
 	public Player(String type, Random random) {
 		this.score = 0;
 		this.type=type;
 		this.random=random;
+	}
+	public void addUsedCard(Card newCard) {
+		cardsOnTable.add(newCard);
 	}
 	
 	public int getScore() {
@@ -34,18 +45,21 @@ public class Player {
 	}
 	
 	public Card getCard(Suit trump) {
-		if(type.equals("random")) {
-			selectedCard= new RandomStrategy().selectCard(hand, random, trump);
-		}else if(type.equals("legal")) {
-			selectedCard= new LegalStrategy().selectCard(hand, random, trump);
-		}else if(type.equals("smart")) {
-			selectedCard= new SmartStrategy().selectCard(hand, random, trump);
-		}
+		SelectionStrategy selectionStrategy= selectionStrategyFactory.getSelectionStrategy(type);
+		
+		
+		selectedCard= selectionStrategy.getSelected(); 
+		
+		
+		
 		return selectedCard;
 	}
-
-
 	
+	public void addCards(Card card) {
+		cardsOnTable.add(card);
+	}
 	
-	
+	public void resetCard() {
+		cardsOnTable.clear();
+	}
 }

@@ -1,9 +1,4 @@
-/Player.class
-/SmartStrategy.class
-/LegalStrategy.class
-/SelectionStrategy.class
-/RandomStrategy.class
-/Suit.class
 /Whist$1.class
-/recordGame.class
-/RecordGame.class
+/Whist$Rank.class
+/Whist.class
+/SelectionStrategyFactory.class

@@ -9,20 +9,28 @@ public class LegalStrategy implements SelectionStrategy{
 	private int index;
 
 	@Override
-	public Card selectCard(Hand cards,Random random, Suit trump) {
+	public void selectCard(Hand cards,Random random, Suit trump) {
 		 
 		if(cards.getNumberOfCardsWithSuit(trump)>0) {
 			trumpCards=cards.getCardsWithSuit(trump);
 			index= random.nextInt(trumpCards.size());
-			selected=trumpCards.get(index);
+			setSelected(trumpCards.get(index));
 		}else {
 			index= random.nextInt(cards.getNumberOfCards());
-			selected=cards.get(index);
+			setSelected(cards.get(index));
 			
 		}
 		
-		return selected;
 		
 	}
+
+	public Card getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Card selected) {
+		this.selected = selected;
+	}
+
 
 }
