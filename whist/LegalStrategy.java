@@ -10,7 +10,7 @@ public class LegalStrategy implements SelectionStrategy{
 
 	@Override
 	public Card selectCard(Hand cards,Random random, Suit trump) {
-		
+		 
 		if(cards.getNumberOfCardsWithSuit(trump)>0) {
 			trumpCards=cards.getCardsWithSuit(trump);
 			index= random.nextInt(trumpCards.size());

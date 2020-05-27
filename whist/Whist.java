@@ -12,10 +12,6 @@ import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class Whist extends CardGame {
-	private static int Human;
-	private static int NPC_random;
-	private static int NPC_legal;
-	private static int NPC_smart;
 
 	
 //  public enum Suit
@@ -32,7 +28,7 @@ public class Whist extends CardGame {
   
   final String trumpImage[] = {"bigspade.gif","bigheart.gif","bigdiamond.gif","bigclub.gif"};
 
-  static final Random random = ThreadLocalRandom.current();
+  static final Random random = new Random(30006);
   
   // return random Enum value
   public static <T extends Enum<?>> T randomEnum(Class<T> clazz){
@@ -55,10 +51,14 @@ public class Whist extends CardGame {
   public boolean rankGreater(Card card1, Card card2) {
 	  return card1.getRankId() < card2.getRankId(); // Warning: Reverse rank order of cards (see comment on enum)
   }
-	 
+private static int Human;
+private static int NPC_random;
+private static int NPC_legal;
+private static int NPC_smart;
+
   private final String version = "1.0";
   public final int nbPlayers = 4;
-  public static int nbStartCards = 4;
+  public static int nbStartCards;
   public static int winningScore = 11;
   public Player[] players= new Player[nbPlayers];
   
@@ -131,6 +131,7 @@ private void initRound() {
 				   hands[i].sort(Hand.SortType.SUITPRIORITY, true);
 				   players[i].setHand(hands[i]);
 			 }
+
 		 if(Human>0) {
 			 // Set up human player for interaction
 			CardListener cardListener = new CardAdapter()  // Human Player plays card
@@ -166,6 +167,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 	int winner;
 	Card winningCard;
 	Suit lead;
+//	RecordGame recordGame;
 	int nextPlayer = random.nextInt(nbPlayers); // randomly select player to lead for this round
 	for (int i = 0; i < nbStartCards; i++) {
 		trick = new Hand(deck);
@@ -183,6 +185,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
  
 //            selected = randomCard(hands[nextPlayer]);
         }
+//        recordGame.recordCard(selected);
         // Lead with selected card
 	        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
 			trick.draw();
@@ -196,14 +199,14 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 		for (int j = 1; j < nbPlayers; j++) {
 			if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
 			selected = null;
-	        if (0 == nextPlayer) {
+	        if (0 == nextPlayer && Human > 0) {
 	    		hands[0].setTouchEnabled(true);
 	    		setStatus("Player 0 double-click on card to follow.");
 	    		while (null == selected) delay(100);
 	        } else {
 		        setStatusText("Player " + nextPlayer + " thinking...");
 		        delay(thinkingTime);
-		        selected = randomCard(hands[nextPlayer]);
+		        selected = players[nextPlayer].getCard(trumps);
 	        }
 	        // Follow with selected card
 		        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
