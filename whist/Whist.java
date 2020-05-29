@@ -61,6 +61,7 @@ private static int NPC_smart;
   public static int nbStartCards;
   public static int winningScore = 11;
   public Player[] players= new Player[nbPlayers];
+  public RoundInformation roundInfo;
   
   private final int handWidth = 400;
   private final int trickWidth = 40;
@@ -161,6 +162,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 	final Suit trumps = randomEnum(Suit.class);
 	final Actor trumpsActor = new Actor("sprites/"+trumpImage[trumps.ordinal()]);
 	
+	roundInfo = new RoundInformation(nbPlayers);
 	addActor(trumpsActor, trumpsActorLocation);
 	// End trump suit
 	Hand trick;
@@ -182,10 +184,15 @@ private Optional<Integer> playRound() {  // Returns winner, if any
     		setStatusText("Player " + nextPlayer + " thinking...");
             delay(thinkingTime);
             selected = players[nextPlayer].getCard(trumps);
- 
-//            selected = randomCard(hands[nextPlayer]);
         }
-//        recordGame.recordCard(selected);
+        
+        for(int z=0; z < nbPlayers; z++) {
+        	if (players[z].getType().equals("legal")) {
+        		players[z].recordCards(selected);
+        		players[z].printcardsontable();
+        	}
+        }
+//        gameInfo.addCurrentCard(selected);
         // Lead with selected card
 	        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
 			trick.draw();
@@ -208,6 +215,12 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 		        delay(thinkingTime);
 		        selected = players[nextPlayer].getCard(trumps);
 	        }
+	        for(int z=0; z < nbPlayers; z++) {
+	        	if (players[z].getType().equals("legal")) {
+	        		players[z].recordCards(selected);
+	        	}
+	        }
+	        
 	        // Follow with selected card
 		        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
 				trick.draw();

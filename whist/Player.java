@@ -10,21 +10,13 @@ public class Player {
 	private Card selectedCard;
 	private Random random;
 	private final SelectionStrategyFactory selectionStrategyFactory = new SelectionStrategyFactory();
-	private ArrayList<Card> cardsOnTable;
-
-	
-	
-
-	
+	private ArrayList<Card> cardsOnTable = new ArrayList<Card>();
 
 	
 	public Player(String type, Random random) {
 		this.score = 0;
 		this.type=type;
 		this.random=random;
-	}
-	public void addUsedCard(Card newCard) {
-		cardsOnTable.add(newCard);
 	}
 	
 	public int getScore() {
@@ -47,19 +39,19 @@ public class Player {
 	public Card getCard(Suit trump) {
 		SelectionStrategy selectionStrategy= selectionStrategyFactory.getSelectionStrategy(type);
 		
-		
-		selectedCard= selectionStrategy.getSelected(); 
-		
-		
+		selectedCard= selectionStrategy.selectCard(hand, random,trump, cardsOnTable);
 		
 		return selectedCard;
 	}
 	
-	public void addCards(Card card) {
+	public void recordCards(Card card) {
 		cardsOnTable.add(card);
 	}
 	
 	public void resetCard() {
 		cardsOnTable.clear();
+	}
+	public void printcardsontable() {
+		System.out.println(cardsOnTable);
 	}
 }

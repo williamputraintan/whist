@@ -1,4 +1,6 @@
-/Whist$1.class
-/Whist$Rank.class
-/Whist.class
+/RecordGame.class
 /SelectionStrategyFactory.class
+/Whist$1.class
+/gameInfo.class
+/GameInformation.class
+/RoundInformation.class
