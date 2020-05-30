@@ -19,13 +19,13 @@ public class Whist extends CardGame {
 //    SPADES, HEARTS, DIAMONDS, CLUBS
 //  }
 
-  public enum Rank
-  {
-    // Reverse order of rank importance (see rankGreater() below)
-	// Order of cards is tied to card images
-	ACE, KING, QUEEN, JACK, TEN, NINE, EIGHT, SEVEN, SIX, FIVE, FOUR, THREE, TWO
-  }
-  
+//  public enum Rank
+//  {
+//    // Reverse order of rank importance (see rankGreater() below)
+//	// Order of cards is tied to card images
+//	ACE, KING, QUEEN, JACK, TEN, NINE, EIGHT, SEVEN, SIX, FIVE, FOUR, THREE, TWO
+//  }
+//  
   final String trumpImage[] = {"bigspade.gif","bigheart.gif","bigdiamond.gif","bigclub.gif"};
 
   static final Random random = new Random(30006);
@@ -187,6 +187,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
             selected = players[nextPlayer].getCard(trumps, gameInfo);
         }
         gameInfo.addCurrentCard(selected);
+        gameInfo.getCurrentlyPlayed().setView(this, null);
         
         // Lead with selected card
 	        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
@@ -212,6 +213,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 		        selected = players[nextPlayer].getCard(trumps, gameInfo);
 	        }
 	        gameInfo.addCurrentCard(selected);
+	        gameInfo.getCurrentlyPlayed().setView(this, null);
 	        
 	        // Follow with selected card
 		        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));

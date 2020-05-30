@@ -8,18 +8,18 @@ public class SmartStrategy implements SelectionStrategy{
 	public Card selectCard(Hand cards, GameInformation gameInfo) {
 		Card selectedCard;
 		int index;
-		ArrayList<Card> leadCards; //Array of the same trump
+		ArrayList<Card> handLeadCards; //Array of the same 
 		Random random = gameInfo.getRandom();
 		Suit lead = gameInfo.getLeadSuit();
 		int numLeadCard = cards.getNumberOfCardsWithSuit(lead);
-//		gameInfo.getCurrentlyPlayed()
+//		gameInfo.getCurrentlyPlayed().sort(Hand.SortType.SUITPRIORITY, true);s
 		
 		
 		if(numLeadCard>0){
-			leadCards = cards.getCardsWithSuit(lead);
-			System.out.println(leadCards);
-			index = random.nextInt(leadCards.size());
-			selectedCard = leadCards.get(index);
+			handLeadCards = cards.getCardsWithSuit(lead);
+			System.out.println(handLeadCards);
+			index = random.nextInt(handLeadCards.size());
+			selectedCard = handLeadCards.get(index);
 		}else {
 			index = random.nextInt(cards.getNumberOfCards());
 			selectedCard = cards.get(index);
@@ -28,11 +28,6 @@ public class SmartStrategy implements SelectionStrategy{
 		
 		return selectedCard;
 	}
-
-
-
-
-
- 
+	
 
 }

@@ -8,7 +8,7 @@ public class GameInformation {
 	private ArrayList<Card> cardUsed = new ArrayList<Card>();
 	
 	
-	private ArrayList<Card> currentlyPlayed = new ArrayList<Card>();
+	private Hand currentlyPlayed = new Hand(null);
 	private int nbplayer;
 	private Random random;
 	private Suit currentTrump;
@@ -38,21 +38,18 @@ public class GameInformation {
 
 	
 	public void addCurrentCard(Card currentCard) {
-		currentlyPlayed.add(currentCard);
+		currentlyPlayed.insert(currentCard, false);
 		
-		if (currentlyPlayed.size()>= nbplayer) {
-			cardUsed.addAll(currentlyPlayed);
-			currentlyPlayed.clear();
-		}
+//		if (currentlyPlayed.size()>= nbplayer) {
+//			cardUsed.addAll(currentlyPlayed);
+//			currentlyPlayed.clear();
+//		}
 	}
 
 	
-	
-	public ArrayList<Card> getCurrentlyPlayed(){
+	public Hand getCurrentlyPlayed(){
 		return currentlyPlayed;
 	}
-	
-	
 	
 	
 }
