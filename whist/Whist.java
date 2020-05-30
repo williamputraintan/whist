@@ -180,13 +180,15 @@ private Optional<Integer> playRound() {  // Returns winner, if any
         if (Human > 0 && 0 == nextPlayer) {  // Select lead depending on player type
     		hands[0].setTouchEnabled(true);
     		setStatus("Player 0 double-click on card to lead.");
-    		while (null == selected) delay(100);
+    		while (null == selected) delay(100);gameInfo.addCurrentCard(selected);
+    		
         } else {
     		setStatusText("Player " + nextPlayer + " thinking...");
             delay(thinkingTime);
-            selected = players[nextPlayer].getCard(trumps, gameInfo);
+            selected = players[nextPlayer].getCard(trumps, gameInfo);gameInfo.addCurrentCard(selected);
         }
         gameInfo.addCurrentCard(selected);
+        gameInfo.getCurrentlyPlayed().setView(this, null);
         
         // Lead with selected card
 	        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));

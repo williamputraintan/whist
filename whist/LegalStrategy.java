@@ -8,19 +8,18 @@ public class LegalStrategy implements SelectionStrategy{
 	public Card selectCard(Hand cards, GameInformation gameInfo) {
 		Card selectedCard;
 		int index;
-		ArrayList<Card> trumpCards;
+		ArrayList<Card> leadCards;
 		Random random = gameInfo.getRandom();
 		Suit leadSuit = gameInfo.getLeadSuit();
 		
 		
 		if(cards.getNumberOfCardsWithSuit(leadSuit)>0) {
-			trumpCards=cards.getCardsWithSuit(leadSuit);
-			index= random.nextInt(trumpCards.size());
-			selectedCard = trumpCards.get(index);
+			leadCards=cards.getCardsWithSuit(leadSuit);
+			index= random.nextInt(leadCards.size());
+			selectedCard = leadCards.get(index);
 		}else {
 			index= random.nextInt(cards.getNumberOfCards());
 			selectedCard = cards.get(index);
-			
 		}
 
 		return selectedCard;
