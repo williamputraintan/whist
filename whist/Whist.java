@@ -61,7 +61,7 @@ private static int NPC_smart;
   public static int nbStartCards;
   public static int winningScore = 11;
   public Player[] players= new Player[nbPlayers];
-  public GameInformation gameInfo = new GameInformation(nbPlayers);
+  public GameInformation gameInfo = new GameInformation(nbPlayers, random);
   
   private final int handWidth = 400;
   private final int trickWidth = 40;
@@ -101,15 +101,15 @@ private void initScore() {
 	 for (int i = 0; i < nbPlayers; i++) {
 		 scores[i] = 0;
 		 if(Human>0 && i==0) {
-			 players[i] = new Player("human",random);
+			 players[i] = new Player("human");
 		 }else if (NPC_random > 0) {
-			 players[i] = new Player("random",random);
+			 players[i] = new Player("random");
 			 NPC_random-=1;
 		 }else if (NPC_smart > 0) {
-			 players[i] = new Player("smart",random);
+			 players[i] = new Player("smart");
 			 NPC_smart-=1;
 		 }else if (NPC_legal > 0) {
-			 players[i] = new Player("legal",random);
+			 players[i] = new Player("legal");
 			 NPC_legal-=1;
 		 }
 		 
@@ -162,7 +162,8 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 	final Suit trumps = randomEnum(Suit.class);
 	final Actor trumpsActor = new Actor("sprites/"+trumpImage[trumps.ordinal()]);
 	
-
+	gameInfo.setCurrentTrump(trumps);
+	
 	addActor(trumpsActor, trumpsActorLocation);
 	// End trump suit
 	Hand trick;
@@ -193,6 +194,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 			selected.setVerso(false);
 			// No restrictions on the card being lead
 			lead = (Suit) selected.getSuit();
+			gameInfo.setLeadSuit(lead);
 			selected.transfer(trick, true); // transfer to trick (includes graphic effect)
 			winner = nextPlayer;
 			winningCard = selected;

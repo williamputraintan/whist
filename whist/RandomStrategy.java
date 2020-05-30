@@ -7,7 +7,9 @@ import ch.aplu.jcardgame.*;
 public class RandomStrategy implements SelectionStrategy {
 
 
-	public Card selectCard(Hand cards, Random random,Suit trump,GameInformation gameInfo) {
+	public Card selectCard(Hand cards, GameInformation gameInfo) {
+		Random random = gameInfo.getRandom();
+		
 		int x = random.nextInt(cards.getNumberOfCards());
 		
 		return cards.get(x);

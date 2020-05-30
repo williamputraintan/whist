@@ -5,13 +5,16 @@ import ch.aplu.jcardgame.*;
 
 public class LegalStrategy implements SelectionStrategy{
 
-	public Card selectCard(Hand cards,Random random, Suit trump,GameInformation gameInfo) {
+	public Card selectCard(Hand cards, GameInformation gameInfo) {
 		Card selectedCard;
 		int index;
 		ArrayList<Card> trumpCards;
-		 
-		if(cards.getNumberOfCardsWithSuit(trump)>0) {
-			trumpCards=cards.getCardsWithSuit(trump);
+		Random random = gameInfo.getRandom();
+		Suit leadSuit = gameInfo.getLeadSuit();
+		
+		
+		if(cards.getNumberOfCardsWithSuit(leadSuit)>0) {
+			trumpCards=cards.getCardsWithSuit(leadSuit);
 			index= random.nextInt(trumpCards.size());
 			selectedCard = trumpCards.get(index);
 		}else {
@@ -19,7 +22,7 @@ public class LegalStrategy implements SelectionStrategy{
 			selectedCard = cards.get(index);
 			
 		}
-		
+
 		return selectedCard;
 	}
 
