@@ -5,7 +5,7 @@ import ch.aplu.jcardgame.*;
 
 public class LegalStrategy implements SelectionStrategy{
 
-	public Card selectCard(Hand cards,Random random, Suit trump, ArrayList<Card> cardsOnTable) {
+	public Card selectCard(Hand cards,Random random, Suit trump,GameInformation gameInfo) {
 		Card selectedCard;
 		int index;
 		ArrayList<Card> trumpCards;

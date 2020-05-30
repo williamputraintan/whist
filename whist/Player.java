@@ -36,10 +36,10 @@ public class Player {
 		return type;
 	}
 	
-	public Card getCard(Suit trump) {
+	public Card getCard(Suit trump, GameInformation gameInfo) {
 		SelectionStrategy selectionStrategy= selectionStrategyFactory.getSelectionStrategy(type);
 		
-		selectedCard= selectionStrategy.selectCard(hand, random,trump, cardsOnTable);
+		selectedCard= selectionStrategy.selectCard(hand, random,trump, gameInfo);
 		
 		return selectedCard;
 	}

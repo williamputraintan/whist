@@ -61,7 +61,7 @@ private static int NPC_smart;
   public static int nbStartCards;
   public static int winningScore = 11;
   public Player[] players= new Player[nbPlayers];
-  public RoundInformation roundInfo;
+  public GameInformation gameInfo = new GameInformation(nbPlayers);
   
   private final int handWidth = 400;
   private final int trickWidth = 40;
@@ -162,14 +162,14 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 	final Suit trumps = randomEnum(Suit.class);
 	final Actor trumpsActor = new Actor("sprites/"+trumpImage[trumps.ordinal()]);
 	
-	roundInfo = new RoundInformation(nbPlayers);
+
 	addActor(trumpsActor, trumpsActorLocation);
 	// End trump suit
 	Hand trick;
 	int winner;
 	Card winningCard;
 	Suit lead;
-//	RecordGame recordGame;
+
 	int nextPlayer = random.nextInt(nbPlayers); // randomly select player to lead for this round
 	for (int i = 0; i < nbStartCards; i++) {
 		trick = new Hand(deck);
@@ -183,16 +183,10 @@ private Optional<Integer> playRound() {  // Returns winner, if any
         } else {
     		setStatusText("Player " + nextPlayer + " thinking...");
             delay(thinkingTime);
-            selected = players[nextPlayer].getCard(trumps);
+            selected = players[nextPlayer].getCard(trumps, gameInfo);
         }
+        gameInfo.addCurrentCard(selected);
         
-        for(int z=0; z < nbPlayers; z++) {
-        	if (players[z].getType().equals("legal")) {
-        		players[z].recordCards(selected);
-        		players[z].printcardsontable();
-        	}
-        }
-//        gameInfo.addCurrentCard(selected);
         // Lead with selected card
 	        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
 			trick.draw();
@@ -213,13 +207,9 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 	        } else {
 		        setStatusText("Player " + nextPlayer + " thinking...");
 		        delay(thinkingTime);
-		        selected = players[nextPlayer].getCard(trumps);
+		        selected = players[nextPlayer].getCard(trumps, gameInfo);
 	        }
-	        for(int z=0; z < nbPlayers; z++) {
-	        	if (players[z].getType().equals("legal")) {
-	        		players[z].recordCards(selected);
-	        	}
-	        }
+	        gameInfo.addCurrentCard(selected);
 	        
 	        // Follow with selected card
 		        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));

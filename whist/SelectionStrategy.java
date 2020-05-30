@@ -5,6 +5,6 @@ import ch.aplu.jcardgame.*;
 
 public interface SelectionStrategy {
 
-	public Card selectCard(Hand cards,Random random,Suit trump, ArrayList<Card> cardsOnTable);
+	public Card selectCard(Hand cards,Random random,Suit trump, GameInformation gameInfo);
 
 }

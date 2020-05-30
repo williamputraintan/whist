@@ -3,15 +3,16 @@ import java.util.ArrayList;
 import ch.aplu.jcardgame.*;
 
 
-public class RoundInformation {
+public class GameInformation {
 	private ArrayList<Card> cardUsed = new ArrayList<Card>();
 	
 	
 	private ArrayList<Card> currentlyPlayed = new ArrayList<Card>();
 	private int nbplayer;
+
+
 	
-	
-	public RoundInformation(int nbplayer) {
+	public GameInformation(int nbplayer) {
 		this.nbplayer = nbplayer;
 	}
 	
@@ -25,8 +26,12 @@ public class RoundInformation {
 			currentlyPlayed.clear();
 		}
 	}
+
 	
 	
+	public ArrayList<Card> getCurrentlyPlayed(){
+		return currentlyPlayed;
+	}
 	
 	
 	

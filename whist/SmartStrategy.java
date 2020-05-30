@@ -5,14 +5,13 @@ import ch.aplu.jcardgame.*;
 
 public class SmartStrategy implements SelectionStrategy{
 
-	private ArrayList<Card> trumpCards;
-	private int index;
-
-
-	
-	
-	public Card selectCard(Hand cards,Random random, Suit trump, ArrayList<Card> cardsOnTable) {
+	public Card selectCard(Hand cards,Random random, Suit trump, GameInformation gameInfo) {
 		Card selectedCard;
+		int index;
+		ArrayList<Card> trumpCards; //Array of the same trump
+		
+		System.out.println(gameInfo.getCurrentlyPlayed());
+		
 		
 		if(cards.getNumberOfCardsWithSuit(trump)>0) {
 			trumpCards = cards.getCardsWithSuit(trump);
