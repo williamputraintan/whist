@@ -108,6 +108,7 @@ private void initScore() {
 		 }else if (NPC_smart > 0) {
 			 players[i] = new Player("smart");
 			 NPC_smart-=1;
+			 System.out.println("SMART: "+i);
 		 }else if (NPC_legal > 0) {
 			 players[i] = new Player("legal");
 			 NPC_legal-=1;
@@ -185,10 +186,11 @@ private Optional<Integer> playRound() {  // Returns winner, if any
         } else {
     		setStatusText("Player " + nextPlayer + " thinking...");
             delay(thinkingTime);
+            
             selected = players[nextPlayer].getCard(trumps, gameInfo);gameInfo.addCurrentCard(selected);
         }
         gameInfo.addCurrentCard(selected);
-        gameInfo.getCurrentlyPlayed().setView(this, null);
+//        gameInfo.getCurrentlyPlayed().setView(this, null);
         
         // Lead with selected card
 	        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
@@ -200,6 +202,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 			selected.transfer(trick, true); // transfer to trick (includes graphic effect)
 			winner = nextPlayer;
 			winningCard = selected;
+			gameInfo.setWinningCard(winningCard);
 		// End Lead
 		for (int j = 1; j < nbPlayers; j++) {
 			if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
@@ -211,10 +214,11 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 	        } else {
 		        setStatusText("Player " + nextPlayer + " thinking...");
 		        delay(thinkingTime);
+		        System.out.println("SMART: "+nextPlayer);
 		        selected = players[nextPlayer].getCard(trumps, gameInfo);
 	        }
 	        gameInfo.addCurrentCard(selected);
-	        gameInfo.getCurrentlyPlayed().setView(this, null);
+//	        gameInfo.getCurrentlyPlayed().setView(this, null);
 	        
 	        // Follow with selected card
 		        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
@@ -246,9 +250,11 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 //					 System.out.println("next");
 					 winner = nextPlayer;
 					 winningCard = selected;
+					 gameInfo.setWinningCard(winningCard);
 				 }
 			// End Follow
 		}
+
 		delay(600);
 		trick.setView(this, new RowLayout(hideLocation, 0));
 		trick.draw();		

@@ -6,14 +6,14 @@ import ch.aplu.jcardgame.*;
 
 public class GameInformation {
 	private ArrayList<Card> cardUsed = new ArrayList<Card>();
+	private ArrayList<Card> currentlyPlayed = new ArrayList<Card>();
 	
-	
-	private Hand currentlyPlayed = new Hand(null);
+//	private Hand currentlyPlayed = new Hand(null);
 	private int nbplayer;
 	private Random random;
 	private Suit currentTrump;
 	private Suit leadSuit;
-
+	private Card winningCard;
 	
 	public GameInformation(int nbplayer, Random random) {
 		this.nbplayer = nbplayer;
@@ -38,9 +38,10 @@ public class GameInformation {
 	
 	
 	public void addCurrentCard(Card currentCard) {	
-
-		currentlyPlayed.insert(currentCard,false);
-		System.out.print("added");
+		currentlyPlayed.add(currentCard);
+//		currentlyPlayed.insert(currentCard,false);
+		
+//		System.out.println(currentlyPlayed);
 
 //		if (currentlyPlayed.size()>= nbplayer) {
 //			cardUsed.addAll(currentlyPlayed);
@@ -50,10 +51,17 @@ public class GameInformation {
 
 
 	
-	public Hand getCurrentlyPlayed(){
+	public ArrayList<Card> getCurrentlyPlayed(){
 		return currentlyPlayed;
 	}
+	
+	public void setWinningCard(Card card) {
+		this.winningCard = card;
+	}
 
+	public Card getWinningCard() {
+		return this.winningCard;
+	}
 	
 	
 }
