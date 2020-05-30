@@ -35,21 +35,25 @@ public class GameInformation {
 	public Suit  getLeadSuit() {
 		return this.leadSuit;
 	}
-
 	
-	public void addCurrentCard(Card currentCard) {
-		currentlyPlayed.insert(currentCard, false);
-		
+	
+	public void addCurrentCard(Card currentCard) {	
+
+		currentlyPlayed.insert(currentCard,false);
+		System.out.print("added");
+
 //		if (currentlyPlayed.size()>= nbplayer) {
 //			cardUsed.addAll(currentlyPlayed);
 //			currentlyPlayed.clear();
 //		}
 	}
 
+
 	
 	public Hand getCurrentlyPlayed(){
 		return currentlyPlayed;
 	}
+
 	
 	
 }
