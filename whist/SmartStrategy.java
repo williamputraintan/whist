@@ -8,18 +8,18 @@ public class SmartStrategy implements SelectionStrategy{
 	public Card selectCard(Hand cards, GameInformation gameInfo) {
 		Card selectedCard;
 		int index;
-		ArrayList<Card> trumpCards; //Array of the same trump
+		ArrayList<Card> leadCards; //Array of the same trump
 		Random random = gameInfo.getRandom();
-		Suit trump = gameInfo.getTrump();
+		Suit lead = gameInfo.getLeadSuit();
+		int numLeadCard = cards.getNumberOfCardsWithSuit(lead);
+//		gameInfo.getCurrentlyPlayed()
 		
-		System.out.println(gameInfo.getCurrentlyPlayed());
 		
-		
-		if(cards.getNumberOfCardsWithSuit(trump)>0) {
-			trumpCards = cards.getCardsWithSuit(trump);
-			System.out.println(trumpCards);
-			index = random.nextInt(trumpCards.size());
-			selectedCard = trumpCards.get(index);
+		if(numLeadCard>0){
+			leadCards = cards.getCardsWithSuit(lead);
+			System.out.println(leadCards);
+			index = random.nextInt(leadCards.size());
+			selectedCard = leadCards.get(index);
 		}else {
 			index = random.nextInt(cards.getNumberOfCards());
 			selectedCard = cards.get(index);
