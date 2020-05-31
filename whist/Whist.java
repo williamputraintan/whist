@@ -177,21 +177,20 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 		trick = new Hand(deck);
 	
     	selected = null;
-  
+    	 System.out.println("CURRENT TURN whist = " + gameInfo.getCurrentlyPlayed().size());
         if (Human > 0 && 0 == nextPlayer) {  // Select lead depending on player type
     		hands[0].setTouchEnabled(true);
     		setStatus("Player 0 double-click on card to lead.");
-    		while (null == selected) delay(100);gameInfo.addCurrentCard(selected);
+    		while (null == selected) delay(100);
     		
         } else {
     		setStatusText("Player " + nextPlayer + " thinking...");
             delay(thinkingTime);
             
-            selected = players[nextPlayer].getCard(trumps, gameInfo);gameInfo.addCurrentCard(selected);
+            selected = players[nextPlayer].getCard(trumps, gameInfo);
         }
         gameInfo.addCurrentCard(selected);
-//        gameInfo.getCurrentlyPlayed().setView(this, null);
-        
+       
         // Lead with selected card
 	        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
 			trick.draw();
@@ -207,6 +206,7 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 		for (int j = 1; j < nbPlayers; j++) {
 			if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
 			selected = null;
+	    	 System.out.println("CURRENT TURN whist = " + gameInfo.getCurrentlyPlayed().size());
 	        if (0 == nextPlayer && Human > 0) {
 	    		hands[0].setTouchEnabled(true);
 	    		setStatus("Player 0 double-click on card to follow.");
@@ -214,7 +214,6 @@ private Optional<Integer> playRound() {  // Returns winner, if any
 	        } else {
 		        setStatusText("Player " + nextPlayer + " thinking...");
 		        delay(thinkingTime);
-		        System.out.println("SMART: "+nextPlayer);
 		        selected = players[nextPlayer].getCard(trumps, gameInfo);
 	        }
 	        gameInfo.addCurrentCard(selected);

@@ -16,7 +16,7 @@ public class SmartStrategy implements SelectionStrategy{
 		
 
 		Card highestTrumpCardUsed;
-		
+		Card selected;
 		Random random = gameInfo.getRandom();
 		Suit trumpSuit = gameInfo.getTrump();
 		Suit leadSuit = gameInfo.getLeadSuit();
@@ -27,7 +27,9 @@ public class SmartStrategy implements SelectionStrategy{
 
 		Card winningCard = gameInfo.getWinningCard();
 		Suit winningSuit = (Suit) winningCard.getSuit();	
+		System.out.print("current turn = "+currentTurn+"\n");
 		switch(currentTurn) {
+	
 			case 0:
 //				if(numTrumpCard>0){
 //					
@@ -38,44 +40,54 @@ public class SmartStrategy implements SelectionStrategy{
 //					
 //				}
 				
-				return findSmallest_nonSuit(cards.getCardList(), trumpSuit);
+				selected = findSmallest_nonSuit(cards.getCardList(), trumpSuit);
+				
+				if (selected!=null) {
+					return selected;
+				}else {
+					return cards.getLast();
+				}
 
 			default:
 				if(numLeadCard>0){
 					leadCards = cards.getCardsWithSuit(leadSuit);
 					
 					System.out.println(leadCards);
-					
 						
 					for(int i=leadCards.size()-1;i>=0;i--) {
-						System.out.println("leadrankID = "+ leadCards.get(i).getRankId());
-						System.out.println("winningcardrankID = "+winningCard.getRankId());
-						System.out.println(leadCards.get(i));
-						if(leadCards.get(i).getRankId() > winningCard.getRankId() && leadCards.get(i).getSuit() == (winningSuit)) {
+//						System.out.println("leadrankID = "+ leadCards.get(i).getRankId());
+//						System.out.println("winningcardrankID = "+winningCard.getRankId());
+//						System.out.println(leadCards.get(i).getSuit());
+//						System.out.println(winningSuit);
+						if(leadCards.get(i).getRankId() < winningCard.getRankId() && leadCards.get(i).getSuit() == (winningSuit)) {
 //							System.out.println("leadrankID = "+ leadCards.get(i).getRankId());
 //							System.out.println("winningcardrankID = "+winningCard.getRankId());
 //							System.out.println(leadCards.get(i));
 							return leadCards.get(i);
 						}
+					
 					}					
 
-					return leadCards.get(0);
+					return leadCards.get(leadCards.size()-1);
 					
 				}else if(numTrumpCard > 0) {
 					trumpCards = cards.getCardsWithSuit(trumpSuit);
 					
 					highestTrumpCardUsed = findHighest_suit(gameInfo.getCurrentlyPlayed(), trumpSuit);
-					
-					for(Card card:trumpCards) {
-						if(card.getRankId() > highestTrumpCardUsed.getRankId()) {
-							return card;
+					if(highestTrumpCardUsed != null) {
+						for(Card card:trumpCards) {
+							if(card.getRankId() < highestTrumpCardUsed.getRankId()) {
+								return card;
+							}
+						}
+						selected = findSmallest_nonSuit(trumpCards, trumpSuit);
+						if(selected != null) {
+							return selected;
 						}
 					}
-					return findSmallest_nonSuit(trumpCards, trumpSuit);
-					
 				}
 //				System.out.println(cards);
-				return cards.get(0);
+				return cards.getLast();
 		}
 		
 
@@ -93,11 +105,12 @@ public class SmartStrategy implements SelectionStrategy{
 				if (card.getSuit().equals(suit)) {
 					highestCard = card;
 					isFirst = false;
+					System.out.println("HIGHEST SUIT = "+card);
 				}
 				continue;
 			}
 
-			if(card.getSuit().equals(suit) && card.getRankId() > highestCard.getRankId()) {
+			if(card.getSuit().equals(suit) && card.getRankId() < highestCard.getRankId()) {
 				highestCard = card;
 			}
 		}
@@ -107,7 +120,7 @@ public class SmartStrategy implements SelectionStrategy{
 	private Card findSmallest_nonSuit(ArrayList<Card> list, Suit suit) {
 		boolean isFirst = true;
 		Card lowestCard = null;
-		
+		System.out.println("Printig the list for findSmallest_nonsuit = "+list);
 		for(Card card:list) {
 			if(isFirst) {
 				if (!card.getSuit().equals(suit)) {
@@ -117,7 +130,7 @@ public class SmartStrategy implements SelectionStrategy{
 				continue;
 			}
 
-			if(!card.getSuit().equals(suit) &&card.getRankId() < lowestCard.getRankId()) {
+			if(!card.getSuit().equals(suit) &&card.getRankId() > lowestCard.getRankId()) {
 				lowestCard = card;
 			}
 			

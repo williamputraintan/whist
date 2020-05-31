@@ -43,10 +43,11 @@ public class GameInformation {
 		
 //		System.out.println(currentlyPlayed);
 
-//		if (currentlyPlayed.size()>= nbplayer) {
-//			cardUsed.addAll(currentlyPlayed);
-//			currentlyPlayed.clear();
-//		}
+		if (currentlyPlayed.size()>= nbplayer) {
+			cardUsed.addAll(currentlyPlayed);
+			currentlyPlayed.clear();
+			
+		}
 	}
 
 
