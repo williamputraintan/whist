@@ -8,6 +8,8 @@ public class Player {
 	private Hand hand;
 	private String type;
 	private Card selectedCard;
+	GameInformation gameInfo;
+	
 
 	private final SelectionStrategyFactory selectionStrategyFactory = new SelectionStrategyFactory();
 
@@ -34,11 +36,16 @@ public class Player {
 	public String getType() {
 		return type;
 	}
+	public void getInfo(Whist whist) {
+		gameInfo = whist.gameInfo;
+	}
 	
-	public Card getCard(Suit trump, GameInformation gameInfo) {
+	
+	public Card getCard(Suit trump, Whist whist) {
 		SelectionStrategy selectionStrategy= selectionStrategyFactory.getSelectionStrategy(type);
-		
-		selectedCard= selectionStrategy.selectCard(hand, gameInfo);
+		getInfo(whist);
+		selectedCard = selectionStrategy.selectCard(hand, gameInfo);
+		System.out.println("PLAYERRR: "+type);
 		
 		return selectedCard;
 	}
