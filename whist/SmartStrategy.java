@@ -85,6 +85,7 @@ public class SmartStrategy implements SelectionStrategy{
 							return selected;
 						}
 					}
+					return trumpCards.get(trumpCards.size()-1); 
 				}
 //				System.out.println(cards);
 				return cards.getLast();

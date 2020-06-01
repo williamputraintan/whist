@@ -1,7 +1,8 @@
-/RecordGame.class
+/SelectionStrategy.class
 /SelectionStrategyFactory.class
-/Whist$1.class
-/gameInfo.class
-/GameInformation.class
-/RoundInformation.class
+/SmartStrategy.class
+/Suit.class
+/Whist.class
 /Rank.class
+/Whist$1.class
+/GameProperties.class
