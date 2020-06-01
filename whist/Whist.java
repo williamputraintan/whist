@@ -101,6 +101,7 @@ public class Whist extends CardGame {
 		 }else if (NPC_smart > 0) {
 			 players[i] = new Player("smart");
 			 NPC_smart-=1;
+			 System.out.println("SMART: "+i);
 		 }else if (NPC_legal > 0) {
 			 players[i] = new Player("legal");
 			 NPC_legal-=1;
@@ -138,7 +139,7 @@ public class Whist extends CardGame {
  }
 
   @SuppressWarnings("resource")
-  public static void main(String[] args) throws IOException{
+  public static void main(String[] args) throws IOException {
   
 	System.out.println("Choose properties (original/legal/smart): ");
 	Scanner myObj = new Scanner(System.in); 
@@ -146,7 +147,31 @@ public class Whist extends CardGame {
 	String property = myObj.nextLine();
   	
 	gameProps= new GameProperties(property);
-
+//	Properties gameProperties = new Properties();
+//	String fileName ="whist/"+property+".properties";
+//
+//	System.out.print(fileName);
+//	
+//	// Read properties
+//	FileReader inStream = null;
+//	try {
+//		inStream = new FileReader(fileName);
+//		gameProperties.load(inStream);
+//	} finally {
+//		if (inStream != null) {
+//		     inStream.close();
+//		}
+//	}
+//	
+//	Human = Integer.parseInt(gameProperties.getProperty("Human"));
+//	NPC_random = Integer.parseInt(gameProperties.getProperty("NPC_random"));
+//	NPC_legal = Integer.parseInt(gameProperties.getProperty("NPC_legal"));
+//	NPC_smart = Integer.parseInt(gameProperties.getProperty("NPC_random"));
+//	enforceRules = Boolean.parseBoolean(gameProperties.getProperty("enforceRules"));
+//	nbStartCards = Integer.parseInt(gameProperties.getProperty("nbStartCards"));
+//	winningScore = Integer.parseInt(gameProperties.getProperty("winningScore"));
+	
+//	System.out.println("Working Directory = " + System.getProperty("user.dir"));
     new Whist();
    
   }

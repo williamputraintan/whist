@@ -8,11 +8,12 @@ public class GameInformation {
 	private ArrayList<Card> cardUsed = new ArrayList<Card>();
 	
 	
-	private Hand currentlyPlayed = new Hand(null);
+	private ArrayList<Card>  currentlyPlayed = new ArrayList<Card> ();
 	private int nbplayer;
 	private Random random;
 	private Suit currentTrump;
 	private Suit leadSuit;
+	private Card winningCard;
 
 	
 	public GameInformation(int nbplayer, Random random) {
@@ -38,17 +39,24 @@ public class GameInformation {
 	
 	
 	public void addCurrentCard(Card currentCard) {
-		currentlyPlayed.insert(currentCard,false);
+		currentlyPlayed.add(currentCard);
 		System.out.print("added");
 //		if (currentlyPlayed.size()>= nbplayer) {
 //			cardUsed.addAll(currentlyPlayed);
 //			currentlyPlayed.clear();
 //		}
 	}
+	public Card getWinningCard() {
+		return winningCard;
+	}
+	public void setWinningCard(Card card) {
+		this.winningCard=card;
+	}
 
+	
 //	
 //	
-	public Hand getCurrentlyPlayed(){
+	public ArrayList<Card>  getCurrentlyPlayed(){
 		return currentlyPlayed;
 	}
 //	
