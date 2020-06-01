@@ -4,7 +4,7 @@ import java.util.Random;
 
 
 import ch.aplu.jcardgame.*;
-import java.util.Iterator;
+
 
 public class SmartStrategy implements SelectionStrategy{
 
@@ -90,25 +90,52 @@ public class SmartStrategy implements SelectionStrategy{
 				return findSmallest_nonSuit(cards.getCardList(),trumpSuit);
 		}
 		
-		return selectedCard;
+
+		
+		
 	}
 	
-	private ArrayList<Card> getCardsOnTable(ArrayList<Card> allCards, Suit suit) {
-		ArrayList<Card> cards= new ArrayList<Card>();
-		Iterator<Card> i = allCards.iterator();
-		while (i.hasNext()) {
-			Card item=i.next();
-			if(item.getSuit().equals(suit)) {
-				cards.add(item);
+	private Card findHighest_suit(ArrayList<Card> list, Suit suit) {
+		
+		boolean isFirst = true;
+		Card highestCard = null;
+		
+		for(Card card:list) {
+			if(isFirst) {
+				if (card.getSuit().equals(suit)) {
+					highestCard = card;
+					isFirst = false;
+					System.out.println("HIGHEST SUIT = "+card);
+				}
+				continue;
+			}
+
+			if(card.getSuit().equals(suit) && card.getRankId() < highestCard.getRankId()) {
+				highestCard = card;
 			}
 		}
-		return cards;
+		return highestCard;
 	}
+	
+	private Card findSmallest_nonSuit(ArrayList<Card> list, Suit suit) {
+		boolean isFirst = true;
+		Card lowestCard = null;
+		System.out.println("Printig the list for findSmallest_nonsuit = "+list);
+		for(Card card:list) {
+			if(isFirst) {
+				if (!card.getSuit().equals(suit)) {
+					lowestCard = card;
+					isFirst = false;
+				}
+				continue;
+			}
 
-
-
-
-
- 
+			if(!card.getSuit().equals(suit) &&card.getRankId() > lowestCard.getRankId()) {
+				lowestCard = card;
+			}
+			
+		}
+		return lowestCard;
+	}
 
 }
