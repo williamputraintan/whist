@@ -12,6 +12,7 @@ import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class Whist extends CardGame {
+	private ArrayList<Observer> observers= new ArrayList();
 	
 		
 	//  public enum Suit
@@ -63,11 +64,14 @@ public class Whist extends CardGame {
 	//  public final int nbPlayers = 4;
 	//  public static int nbStartCards;
 	//  public static int winningScore = 11;
+	  
+	  
+	  
 	  int nbPlayers = gameProperties.getNbPlayers();
 	  
 	  
 	  public Player[] players= new Player[nbPlayers];
-	  public GameInformation gameInfo = new GameInformation(nbPlayers, random);
+
 	  
 	  private final int handWidth = 400;
 	  private final int trickWidth = 40;
@@ -100,6 +104,13 @@ public class Whist extends CardGame {
 	
 	Font bigFont = new Font("Serif", Font.BOLD, 36);
 	
+	private void notifyObservers(Card card, Suit lead, Suit trump, Card winningCard) {
+		for(Observer observer:observers) {
+			observer.addCurrentCard(card);
+			observer.tableInfo(winningCard, lead, trump);
+		}
+	}
+	
 	private void initScore() {
 		int Human = gameProperties.getHuman();
 		int NPC_random = gameProperties.getNPC_random();
@@ -109,18 +120,19 @@ public class Whist extends CardGame {
 		 for (int i = 0; i < nbPlayers; i++) {
 			 scores[i] = 0;
 			 if(Human>0 && i==0) {
-				 players[i] = new Player("human");
+				 players[i] = new Player("human", random);
 			 }else if (NPC_random > 0) {
-				 players[i] = new Player("random");
+				 players[i] = new Player("random", random);
 				 NPC_random-=1;
 			 }else if (NPC_smart > 0) {
-				 players[i] = new Player("smart");
+				 players[i] = new Player("smart", random);
 				 NPC_smart-=1;
 				 System.out.println("SMART: "+i);
 			 }else if (NPC_legal > 0) {
-				 players[i] = new Player("legal");
+				 players[i] = new Player("legal", random);
 				 NPC_legal-=1;
 			 }
+			 observers.add(players[i]);
 			 
 			 scoreActors[i] = new TextActor("0", Color.WHITE, bgColor, bigFont);
 			 addActor(scoreActors[i], scoreLocations[i]);
@@ -179,7 +191,7 @@ public class Whist extends CardGame {
 		int winningScore = gameProperties.getWinningScore();
 		
 		
-		gameInfo.setCurrentTrump(trumps);
+		
 		
 		addActor(trumpsActor, trumpsActorLocation);
 		// End trump suit
@@ -187,13 +199,15 @@ public class Whist extends CardGame {
 		int winner;
 		Card winningCard;
 		Suit lead;
+		
+		
 	
 		int nextPlayer = random.nextInt(nbPlayers); // randomly select player to lead for this round
 		for (int i = 0; i < nbStartCards; i++) {
 			trick = new Hand(deck);
 		
 	    	selected = null;
-	    	 System.out.println("CURRENT TURN whist = " + gameInfo.getCurrentlyPlayed().size());
+
 	        if (Human > 0 && 0 == nextPlayer) {  // Select lead depending on player type
 	    		hands[0].setTouchEnabled(true);
 	    		setStatus("Player 0 double-click on card to lead.");
@@ -202,10 +216,12 @@ public class Whist extends CardGame {
 	        } else {
 	    		setStatusText("Player " + nextPlayer + " thinking...");
 	            delay(thinkingTime);
-	            
-	            selected = players[nextPlayer].getCard(trumps, gameInfo);
+	            selected = players[nextPlayer].getCard();
+
 	        }
-	        gameInfo.addCurrentCard(selected);
+
+	        
+	        
 	       
 	        // Lead with selected card
 		        trick.setView(this, new RowLayout(trickLocation, (trick.getNumberOfCards()+2)*trickWidth));
@@ -213,16 +229,17 @@ public class Whist extends CardGame {
 				selected.setVerso(false);
 				// No restrictions on the card being lead
 				lead = (Suit) selected.getSuit();
-				gameInfo.setLeadSuit(lead);
+
 				selected.transfer(trick, true); // transfer to trick (includes graphic effect)
 				winner = nextPlayer;
 				winningCard = selected;
-				gameInfo.setWinningCard(winningCard);
+				
+				notifyObservers(selected, lead, trumps, winningCard);
 			// End Lead
 			for (int j = 1; j < nbPlayers; j++) {
 				if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
 				selected = null;
-		    	 System.out.println("CURRENT TURN whist = " + gameInfo.getCurrentlyPlayed().size());
+
 		        if (0 == nextPlayer && Human > 0) {
 		    		hands[0].setTouchEnabled(true);
 		    		setStatus("Player 0 double-click on card to follow.");
@@ -230,9 +247,9 @@ public class Whist extends CardGame {
 		        } else {
 			        setStatusText("Player " + nextPlayer + " thinking...");
 			        delay(thinkingTime);
-			        selected = players[nextPlayer].getCard(trumps, gameInfo);
+			        selected = players[nextPlayer].getCard();
 		        }
-		        gameInfo.addCurrentCard(selected);
+		        notifyObservers(selected, lead, trumps, winningCard);
 	//	        gameInfo.getCurrentlyPlayed().setView(this, null);
 		        
 		        // Follow with selected card
@@ -265,7 +282,7 @@ public class Whist extends CardGame {
 	//					 System.out.println("next");
 						 winner = nextPlayer;
 						 winningCard = selected;
-						 gameInfo.setWinningCard(winningCard);
+						 notifyObservers(selected, lead, trumps, winningCard);
 					 }
 				// End Follow
 			}

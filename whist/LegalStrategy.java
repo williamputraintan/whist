@@ -5,12 +5,13 @@ import ch.aplu.jcardgame.*;
 
 public class LegalStrategy implements SelectionStrategy{
 
-	public Card selectCard(Hand cards, GameInformation gameInfo) {
+	public Card selectCard(Player playerInfo) {
 		Card selectedCard;
 		int index;
 		ArrayList<Card> leadCards;
-		Random random = gameInfo.getRandom();
-		Suit leadSuit = gameInfo.getLeadSuit();
+		Random random = playerInfo.getRandom();
+		Suit leadSuit = playerInfo.getLeadSuit();
+		Hand cards = playerInfo.getHand();
 		
 		
 		if(cards.getNumberOfCardsWithSuit(leadSuit)>0) {

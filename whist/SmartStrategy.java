@@ -1,14 +1,11 @@
 import java.util.ArrayList;
-import java.util.Random;
-
-
 
 import ch.aplu.jcardgame.*;
 
 
 public class SmartStrategy implements SelectionStrategy{
 
-	public Card selectCard(Hand cards, GameInformation gameInfo) {
+	public Card selectCard(Player playerInfo) {
 
 		ArrayList<Card> leadCards; 	//Array of leadcards in hand
 		ArrayList<Card> trumpCards;	//Array of trump cards in hand
@@ -17,52 +14,40 @@ public class SmartStrategy implements SelectionStrategy{
 
 		Card highestTrumpCardUsed;
 		Card selected;
-		Random random = gameInfo.getRandom();
-		Suit trumpSuit = gameInfo.getTrump();
-		Suit leadSuit = gameInfo.getLeadSuit();
-		int numLeadCard = cards.getNumberOfCardsWithSuit(leadSuit);
-		int numTrumpCard = cards.getNumberOfCardsWithSuit(trumpSuit);
 		
-		int currentTurn = gameInfo.getCurrentlyPlayed().size();
-
-		Card winningCard = gameInfo.getWinningCard();
-		Suit winningSuit = (Suit) winningCard.getSuit();	
+		Hand myCards = playerInfo.getHand();
+		Suit trumpSuit = playerInfo.getCurrentTrump();
+		Suit leadSuit = playerInfo.getLeadSuit();
+		Card winningCard = playerInfo.getWinningCard();
+		ArrayList<Card> cardsOnTable = playerInfo.getCardsOnTable();
+		
+		Suit winningSuit = (Suit) winningCard.getSuit();
+		int currentTurn = cardsOnTable.size();
+		int numLeadCard = playerInfo.getHand().getNumberOfCardsWithSuit(leadSuit);
+		int numTrumpCard = playerInfo.getHand().getNumberOfCardsWithSuit(trumpSuit);		
+		
 		System.out.print("current turn = "+currentTurn+"\n");
 		switch(currentTurn) {
 	
 			case 0:
-//				if(numTrumpCard>0){
-//					
-//					selectedCard = leadCards.get(0);
-//				}else {
-//					index = random.nextInt(cards.getNumberOfCards());
-//					selectedCard = cards.get(index);
-//					
-//				}
 				
-				selected = findSmallest_nonSuit(cards.getCardList(), trumpSuit);
+				selected = findSmallest_nonSuit(myCards.getCardList(), trumpSuit);
 				
 				if (selected!=null) {
 					return selected;
 				}else {
-					return cards.getLast();
+					return myCards.getLast();
 				}
 
 			default:
 				if(numLeadCard>0){
-					leadCards = cards.getCardsWithSuit(leadSuit);
+					leadCards = myCards.getCardsWithSuit(leadSuit);
 					
 					System.out.println(leadCards);
 						
 					for(int i=leadCards.size()-1;i>=0;i--) {
-//						System.out.println("leadrankID = "+ leadCards.get(i).getRankId());
-//						System.out.println("winningcardrankID = "+winningCard.getRankId());
-//						System.out.println(leadCards.get(i).getSuit());
-//						System.out.println(winningSuit);
+
 						if(leadCards.get(i).getRankId() < winningCard.getRankId() && leadCards.get(i).getSuit() == (winningSuit)) {
-//							System.out.println("leadrankID = "+ leadCards.get(i).getRankId());
-//							System.out.println("winningcardrankID = "+winningCard.getRankId());
-//							System.out.println(leadCards.get(i));
 							return leadCards.get(i);
 						}
 					
@@ -71,9 +56,9 @@ public class SmartStrategy implements SelectionStrategy{
 					return leadCards.get(leadCards.size()-1);
 					
 				}else if(numTrumpCard > 0) {
-					trumpCards = cards.getCardsWithSuit(trumpSuit);
+					trumpCards = myCards.getCardsWithSuit(trumpSuit);
 					
-					highestTrumpCardUsed = findHighest_suit(gameInfo.getCurrentlyPlayed(), trumpSuit);
+					highestTrumpCardUsed = findHighest_suit(cardsOnTable, trumpSuit);
 					if(highestTrumpCardUsed != null) {
 						for(Card card:trumpCards) {
 							if(card.getRankId() < highestTrumpCardUsed.getRankId()) {
@@ -88,7 +73,7 @@ public class SmartStrategy implements SelectionStrategy{
 					return trumpCards.get(trumpCards.size()-1); 
 				}
 //				System.out.println(cards);
-				return cards.getLast();
+				return myCards.getLast();
 		}
 		
 

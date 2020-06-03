@@ -1,8 +1,2 @@
-/SelectionStrategy.class
-/SelectionStrategyFactory.class
-/SmartStrategy.class
-/Suit.class
-/Whist.class
-/Rank.class
+/Observer.class
 /Whist$1.class
-/GameProperties.class
