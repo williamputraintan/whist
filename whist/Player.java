@@ -59,7 +59,10 @@ public class Player implements Observer {
 		SelectionStrategy selectionStrategy= selectionStrategyFactory.getSelectionStrategy(this.type);
 		
 		selectedCard= selectionStrategy.selectCard(this);
-		
+//		System.out.println("cardsOnTable = " + cardsOnTable);
+//		System.out.println("leadSuit = "+leadSuit);
+//		System.out.println("winningCard = "+ winningCard);
+//		System.out.println("cur trump = " + currentTrump);
 		return selectedCard;
 	}
 

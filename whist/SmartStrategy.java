@@ -26,7 +26,6 @@ public class SmartStrategy implements SelectionStrategy{
 		int numLeadCard = playerInfo.getHand().getNumberOfCardsWithSuit(leadSuit);
 		int numTrumpCard = playerInfo.getHand().getNumberOfCardsWithSuit(trumpSuit);		
 		
-		System.out.print("current turn = "+currentTurn+"\n");
 		switch(currentTurn) {
 	
 			case 0:
@@ -91,7 +90,7 @@ public class SmartStrategy implements SelectionStrategy{
 				if (card.getSuit().equals(suit)) {
 					highestCard = card;
 					isFirst = false;
-					System.out.println("HIGHEST SUIT = "+card);
+
 				}
 				continue;
 			}
@@ -106,7 +105,7 @@ public class SmartStrategy implements SelectionStrategy{
 	private Card findSmallest_nonSuit(ArrayList<Card> list, Suit suit) {
 		boolean isFirst = true;
 		Card lowestCard = null;
-		System.out.println("Printig the list for findSmallest_nonsuit = "+list);
+
 		for(Card card:list) {
 			if(isFirst) {
 				if (!card.getSuit().equals(suit)) {

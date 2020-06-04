@@ -219,7 +219,7 @@ public class Whist extends CardGame {
 	            selected = players[nextPlayer].getCard();
 
 	        }
-
+	        
 	        
 	        
 	       
@@ -236,6 +236,9 @@ public class Whist extends CardGame {
 				
 				notifyObservers(selected, lead, trumps, winningCard);
 			// End Lead
+				
+				
+				
 			for (int j = 1; j < nbPlayers; j++) {
 				if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
 				selected = null;
@@ -249,7 +252,7 @@ public class Whist extends CardGame {
 			        delay(thinkingTime);
 			        selected = players[nextPlayer].getCard();
 		        }
-		        notifyObservers(selected, lead, trumps, winningCard);
+		        
 	//	        gameInfo.getCurrentlyPlayed().setView(this, null);
 		        
 		        // Follow with selected card
@@ -282,11 +285,13 @@ public class Whist extends CardGame {
 	//					 System.out.println("next");
 						 winner = nextPlayer;
 						 winningCard = selected;
-						 notifyObservers(selected, lead, trumps, winningCard);
+					
 					 }
+				
+				notifyObservers(selected, lead, trumps, winningCard);
 				// End Follow
 			}
-	
+			System.out.println("              tricks                  = " + trick);
 			delay(600);
 			trick.setView(this, new RowLayout(hideLocation, 0));
 			trick.draw();		
