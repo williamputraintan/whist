@@ -1,4 +1,4 @@
-import java.io.FileNotFoundException;
+// Edited by Team101: William Putra Intan(955545), Franklin Aldo Darmansa (1025392), Patricia Angelica Budiman (1012861)
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
@@ -39,7 +39,7 @@ public class GameProperties {
 			}
 		}
 
-		//Setting the variales based on the readFile
+		//Setting the variables based on the readFile
 		this.Human= Integer.parseInt(gameProperties.getProperty("Human"));
 		this.NPC_random= Integer.parseInt(gameProperties.getProperty("NPC_random"));
 		this.NPC_legal= Integer.parseInt(gameProperties.getProperty("NPC_legal"));

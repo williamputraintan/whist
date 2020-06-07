@@ -1,7 +1,8 @@
 /**
  * The class will select strategy based on the type of player
  */
-class SelectionStrategyFactory {
+// Edited by Team101: William Putra Intan(955545), Franklin Aldo Darmansa (1025392), Patricia Angelica Budiman (1012861)
+public class SelectionStrategyFactory {
 	//Create new strategy for all type of player
 	private final SelectionStrategy randomStrategy =  new RandomStrategy();
 	private final SelectionStrategy smartStrategy =  new SmartStrategy();
@@ -9,7 +10,7 @@ class SelectionStrategyFactory {
 	private SelectionStrategy selectedStrategy;
 	
 	/**
-	 * Will use the strategy based on users type
+	 * Will use the strategy based on user's type
 	 * @param users type
 	 * @return the strategy used for the player
 	 */

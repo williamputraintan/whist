@@ -1,5 +1,5 @@
 // Whist.java
-
+// Edited by Team101: William Putra Intan(955545), Franklin Aldo Darmansa (1025392), Patricia Angelica Budiman (1012861)
 import ch.aplu.jcardgame.*;
 import ch.aplu.jgamegrid.*;
 
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class Whist extends CardGame {
-	private ArrayList<Observer> observers= new ArrayList();
+	private ArrayList<Observer> observers= new ArrayList<Observer>();
 
 	final String trumpImage[] = {"bigspade.gif","bigheart.gif","bigdiamond.gif","bigclub.gif"};
 
@@ -74,14 +74,14 @@ public class Whist extends CardGame {
 	
 	
 	
-	  public void setStatus(String string) { setStatusText(string); }
+	public void setStatus(String string) { setStatusText(string); }
 	  
 	private int[] scores = new int[nbPlayers];
 	
 	Font bigFont = new Font("Serif", Font.BOLD, 36);
 	
 	/**
-	 * Update each player about current change
+	 * Update each player about current change in cards in the round
 	 * @param card, update last card used by other player
 	 * @param lead, update latest lead card
 	 * @param trump, update latest trump card
@@ -144,7 +144,7 @@ public class Whist extends CardGame {
 				   hands[i].sort(Hand.SortType.SUITPRIORITY, true);
 				   players[i].setHand(hands[i]);
 			 }
-
+		// if there's a human in the game
 		 if(Human>0) {
 			 // Set up human player for interaction
 			CardListener cardListener = new CardAdapter()  // Human Player plays card
@@ -227,7 +227,6 @@ public class Whist extends CardGame {
 			for (int j = 1; j < nbPlayers; j++) {
 				if (++nextPlayer >= nbPlayers) nextPlayer = 0;  // From last back to first
 				selected = null;
-
 		        if (0 == nextPlayer && Human > 0) {
 		    		hands[0].setTouchEnabled(true);
 		    		setStatus("Player 0 double-click on card to follow.");
@@ -266,7 +265,6 @@ public class Whist extends CardGame {
 						  // trumped when non-trump was winning
 						 (selected.getSuit() == trumps && winningCard.getSuit() != trumps)) {
 						 System.out.println("NEW WINNER");
-	//					 System.out.println("next");
 						 winner = nextPlayer;
 						 winningCard = selected;
 					
@@ -275,7 +273,6 @@ public class Whist extends CardGame {
 				notifyObservers(selected, lead, trumps, winningCard);
 				// End Follow
 			}
-			System.out.println("              tricks                  = " + trick);
 			delay(600);
 			trick.setView(this, new RowLayout(hideLocation, 0));
 			trick.draw();		
@@ -310,11 +307,7 @@ public class Whist extends CardGame {
 	public static void main(String[] args) throws IOException
 	  {
 	  
-		
-		System.out.println("Choose properties (original/legal/smart): ");
-		Scanner myObj = new Scanner(System.in); 
-		String property = myObj.nextLine();
-	  	String fileName ="whist/"+property+".properties";
+	  	String fileName ="whist/"+"whist"+".properties";
 	  	
 	  	gameProperties = new GameProperties(fileName);
 	

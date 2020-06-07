@@ -1,3 +1,4 @@
+// Edited by Team101: William Putra Intan(955545), Franklin Aldo Darmansa (1025392), Patricia Angelica Budiman (1012861)
 import java.util.ArrayList;
 
 import ch.aplu.jcardgame.*;
@@ -6,7 +7,6 @@ import ch.aplu.jcardgame.*;
 public class SmartStrategy implements SelectionStrategy{
 
 	public Card selectCard(Player playerInfo) {
-
 		ArrayList<Card> leadCards; 	//Array of leadcards in hand
 		ArrayList<Card> trumpCards;	//Array of trump cards in hand
 		
@@ -27,6 +27,7 @@ public class SmartStrategy implements SelectionStrategy{
 		int numLeadCard = playerInfo.getHand().getNumberOfCardsWithSuit(leadSuit);
 		int numTrumpCard = playerInfo.getHand().getNumberOfCardsWithSuit(trumpSuit);		
 		
+		
 		//Identify which strategy used for different turns
 		switch(currentTurn) {
 			
@@ -45,6 +46,7 @@ public class SmartStrategy implements SelectionStrategy{
 
 			//NPC move other than the first move
 			default:
+								
 				//Will check if have a card that have the same suit as the lead card
 				if(numLeadCard>0){
 
