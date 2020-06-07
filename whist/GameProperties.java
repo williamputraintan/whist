@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class GameProperties {
+
+	//Declare variable for number of player in the game
 	private int Human;
 	private int NPC_random;
 	private int NPC_legal;
 	private int NPC_smart;
 
+	//Declare variable for the game 
 	private final String version = "1.0";
 	private int nbPlayers = 4;
 	private int nbStartCards;
@@ -16,12 +19,14 @@ public class GameProperties {
 	private boolean enforceRules=false;
 	
 	 
-	 
+	/**
+	 * Will set the appropriate variable based on the file read
+	 * @param fileName
+	 * @throws IOException
+	 */
 	public GameProperties(String fileName) throws IOException {
 		Properties gameProperties = new Properties();
 		
-		
-		System.out.print(fileName);
 		
 		// Read properties
 		FileReader inStream = null;
@@ -33,6 +38,8 @@ public class GameProperties {
 			     inStream.close();
 			}
 		}
+
+		//Setting the variales based on the readFile
 		this.Human= Integer.parseInt(gameProperties.getProperty("Human"));
 		this.NPC_random= Integer.parseInt(gameProperties.getProperty("NPC_random"));
 		this.NPC_legal= Integer.parseInt(gameProperties.getProperty("NPC_legal"));
@@ -41,8 +48,6 @@ public class GameProperties {
 		this.nbStartCards= Integer.parseInt(gameProperties.getProperty("nbStartCards"));
 		this.winningScore= Integer.parseInt(gameProperties.getProperty("winningScore"));
 	 }
-
-
 
 	public int getHuman() {
 		return Human;

@@ -1,8 +1,10 @@
 import ch.aplu.jcardgame.Card;
 
 public interface Observer {
-	//HARUS DIPiSAH karena dia namah terus tiap dia playround . to be continued....
+	
+	//add card function to the observer
 	public void addCurrentCard(Card card);
 	
+	//Update current information of the round
 	public void tableInfo(Card winningCard, Suit leadSuit, Suit currentTrump);
 }
