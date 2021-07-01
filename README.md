@@ -15,6 +15,8 @@ Object oriented principle applied:
 * Protected Variation
 
 <br>
+<p>To look at the UML Design Diagram, please <a href="/DesignDiagram.pdf">click here</a>.</p>
+<br>
 
 The following PDF shows the report of the program created.
 
@@ -25,3 +27,4 @@ The following PDF shows the report of the program created.
         <p>This does not support to display PDFs. Please click the PDF link to view it: <a href="/report.pdf">View PDF</a>.</p>
     </embed>
 </object>
+
