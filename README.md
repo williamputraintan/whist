@@ -1,10 +1,10 @@
 # whist
 
-The projects creates an NPC (Non-Playable Cardplayers) Whist game which implemented on multiple Object Oriented Principles and Patterns.
+The project creates NPCs (Non-Playable Character) for Whist game which implemented on multiple Object Oriented Principles and Patterns.
 <br>
-In this project object oriented pattern applied:
+In this project, object oriented / design pattern applied:
 * Factory
-* Design
+* Strategy
 * Observer
 
 Object oriented principle applied:
